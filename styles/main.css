@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap');
+
+DIV {
+    font-family: 'Noto Sans TC', sans-serif;
+    /*outline: #f00 solid thin;*/
+}
+
+BODY {
+    padding: 0px;
+    margin: 0px;
+}
+
+#familyNode {
+    position: absolute;
+    padding: 0px;
+    margin: 0px;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.node {
+    border-radius: 20px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.name {
+    text-align: center;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.name A {
+    text-decoration: none;
+}
+
+.male {
+    background-color: #BDE0FE;
+    color: #A2D2FF;
+}
+
+.female {
+    background-color: #FFC8DD;
+    color: #FFAFCC;
+}
+
+.self {
+    width: 300px;
+    height: 200px;
+    clear: left;
+    float: left;
+}
+
+.other {
+    width: 200px;
+    height: 100px;
+    float: left;
+}
+
+.parentsNodes, .siblingNodes, .childrenNodes {
+    clear: both;
+}
+
+.companionNodes {
+    float: left;
+    clear: right;
+}
+
+/*
+.self {
+    position: absolute;
+    margin: auto;
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: 0%;
+}
+
+.other {
+    position: relative;
+}
+
+.parentsNodes {
+    position: absolute;
+    margin: auto;
+    left: 0%;
+    right: 0%;
+    top: -200px;
+}
+
+.companionNodes {
+    position: absolute;
+    right: -200px;
+}
+
+.siblingNodes {
+    position: absolute;
+    left: 200px;
+}
+
+.childrenNodes {
+    position: absolute;
+    margin: auto;
+    left: 0%;
+    right: 0%;
+    bottom: -200px;
+}
+*/

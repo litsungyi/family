@@ -3,7 +3,7 @@ let datas = {};
 let dataList = [];
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    let url = 'https://script.google.com/macros/s/AKfycbxJioDtaMSxOFCfu2H0lJeG2Rzu7oS9QY3xgPbWpLgztoBoG1d_9OviwGARBkEFnH2x8w/exec';
+    let url = 'https://script.google.com/macros/s/AKfycbz9V-Su7h6JcjTAlXyVHHCGn4M-tu48ZhtXy78YlPq3-b3xIFw1m2tYcHbpMfBn8GSMyw/exec';
     fetch(url, { method: 'POST'}).then(response => {
         if (!response.ok) {
             console.log(response.status);
@@ -143,6 +143,20 @@ function updateNode(node, data, currentData, options = {}) {
 
     if (options['showLife'] !== undefined && options['showLife']) {
         let lifeNode = node.querySelectorAll('.life')[0];
+
+        let name_alias = [];
+        if (data['courtesy_name'] !== undefined && data['courtesy_name'] !== '') {
+            name_alias.push(`字 ${data['courtesy_name']}`);
+        }
+
+        if (data['art_name'] !== undefined && data['art_name'] !== '') {
+            name_alias.push(`號 ${data['art_name']}`);
+        }
+
+        if (name_alias.length !== 0) {
+            lifeNode.innerHTML += `<div>${name_alias.join('，')}</div>`;
+        }
+
         if (data['birth_day'] !== undefined && data['birth_day'] !== '' &&
             data['death_day'] !== undefined && data['death_day'] !== '') {
             lifeNode.innerHTML += `<div>享年 ${data['death_day'] - data['birth_day'] + 1} (${data['birth_day']} - ${data['death_day']})</div>`;
@@ -184,11 +198,15 @@ function updateNode(node, data, currentData, options = {}) {
         }
 
         if (data['birth_text'] !== undefined && data['birth_text'] !== '') {
-            lifeNode.innerHTML += `<div><i class="fa-sharp fa-solid fa-baby"></i> 生於 ${data['birth_text']}</div>`;
+            lifeNode.innerHTML += `<div><i class="fas fa-fw fa-solid fa-baby"></i> 生於 ${data['birth_text']}</div>`;
         }
 
         if (data['death_text'] !== undefined && data['death_text'] !== '') {
-            lifeNode.innerHTML += `<div><i class="fa-solid fa-coffin"></i> 卒於 ${data['death_text']}</div>`;
+            lifeNode.innerHTML += `<div><i class="fas fa-fw fa-solid fa-skull"></i> 卒於 ${data['death_text']}</div>`;
+        }
+
+        if (data['tomb'] !== undefined && data['tomb'] !== '') {
+            lifeNode.innerHTML += `<div><i class="fas fa-fw fa-solid fa-cross"></i> 墳墓 ${data['tomb']}</div>`;
         }
     }
 
@@ -210,7 +228,11 @@ function updateNode(node, data, currentData, options = {}) {
 
             case 'father':
                 rootNode.classList.add('other');
-                descriptionNode.innerHTML += `<div>父親</div>`;
+                if (currentData['adoption_type'] === '入' ) {
+                    descriptionNode.innerHTML += `<div>父親 (入)</div>`;
+                } else {
+                    descriptionNode.innerHTML += `<div>父親</div>`;
+                }
                 break;
 
             case 'mother':
@@ -254,10 +276,17 @@ function updateNode(node, data, currentData, options = {}) {
 
             case 'child':
                 rootNode.classList.add('other');
+                let orderChild = data['order'];
+                if (data['adoption_type'] === '入' && currentData['id'] === data['adoption_id']) {
+                    orderChild = data['order2']
+                } else if (data['adoption_type'] === '承' && currentData['id'] === data['adoption_id']) {
+                    orderChild = data['order2']
+                }
+
                 if (data['gender'] == 'M') {
-                    descriptionNode.innerHTML += `<div>兒子 (${data['order']})</div>`;
+                    descriptionNode.innerHTML += `<div>兒子 (${orderChild})</div>`;
                 } else {
-                    descriptionNode.innerHTML += `<div>女兒 (${data['order']})</div>`;
+                    descriptionNode.innerHTML += `<div>女兒 (${orderChild})</div>`;
                 }
                 break;
 
@@ -273,23 +302,34 @@ function updateNode(node, data, currentData, options = {}) {
     }
 
     let nameNode = node.querySelectorAll('.name')[0];
+    let genderIcon = '';
+    if (data['gender'] == 'M') {
+        genderIcon = "<i class=\"fas fa-solid fa-mars fa-fw\"></i>"
+    } else {
+        genderIcon = "<i class=\"fas fa-solid fa-venus fa-fw\"></i>"
+    }
+
     if (data['member_type'] == '宗族') {
         if (isSelf) {
-            nameNode.textContent = data['first_name'];
+            nameNode.innerHTML = `${genderIcon} ${data['first_name']}`;
         } else {
-            if (data['adoption_type'] !== '') {
-                nameNode.innerHTML = `<a href="javascript: changeId('${data['id']}');">${data['first_name']} (${data['adoption_type']})</a>`;
+            if (data['adoption_type'] === '入' && currentData['id'] === data['adoption_id']) {
+                nameNode.innerHTML = `${genderIcon} <a href="javascript: changeId('${data['id']}');">${data['first_name']} (出) <i class="fas fa-solid fa-link fa-sm"></i></a>`;
+            } else if (data['adoption_type'] === '承' && currentData['adoption_id'] === data['id']) {
+                nameNode.innerHTML = `${genderIcon} <a href="javascript: changeId('${data['id']}');">${data['first_name']} (出) <i class="fas fa-solid fa-link fa-sm"></i></a>`;
+            } else if (data['adoption_type'] !== '') {
+                nameNode.innerHTML = `${genderIcon} <a href="javascript: changeId('${data['id']}');">${data['first_name']} (${data['adoption_type']}) <i class="fas fa-solid fa-link fa-sm"></i></a>`;
             } else {
-                nameNode.innerHTML = `<a href="javascript: changeId('${data['id']}');">${data['first_name']}</a>`;
+                nameNode.innerHTML = `${genderIcon} <a href="javascript: changeId('${data['id']}');">${data['first_name']} <i class="fas fa-solid fa-link fa-sm"></i></a>`;
             }
         }
     } else {
         if (data['gender'] == 'M') {
-            nameNode.textContent = `${data['last_name']}${data['first_name']}`;
+            nameNode.innerHTML = `${genderIcon} ${data['last_name']}${data['first_name']}`;
         } else if (data['generation'] <= 7 ) {
-            nameNode.textContent = `${data['last_name']}氏 ${data['first_name']}`;
+            nameNode.innerHTML = `${genderIcon} ${data['last_name']}氏 閨名${data['first_name']}`;
         } else {
-            nameNode.textContent = `${data['last_name']}${data['first_name']}`;
+            nameNode.innerHTML = `${genderIcon} ${data['last_name']}${data['first_name']}`;
         }
     }
 }
@@ -298,15 +338,15 @@ function sortChildOrder(data1, data2) {
     let order1 = parseInt(data1['order']);
     let order2 = parseInt(data2['order']);
     if (data1['adoption_type'] !== '') {
-        let adoption = data1['adoption_type'].split(',');
-        if (adoption.length == 2) {
-            order1 = parseInt(adoption[1]);
+        let adoption = data1['adoption_type'];
+        if (adoption == '入') {
+            order1 = parseInt(data1['order2']);
         }
     }
     if (data2['adoption_type'] !== '') {
-        let adoption = data2['adoption_type'].split(',');
-        if (adoption.length == 2) {
-            order2 = parseInt(adoption[1]);
+        let adoption = data2['adoption_type'];
+        if (adoption == '入') {
+            order2 = parseInt(data1['order2']);
         }
     }
 

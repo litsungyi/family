@@ -120,6 +120,20 @@ function getAdoptiveChildDatas(myData) {
     return dataList.filter((value, _) => isMyAdoptveParents(id, value));
 }
 
+function getLifeNote(year) {
+    if (year < 30) {
+        return `得年 ${year} 歲`;
+    } else if (year < 60) {
+        return `享年 ${year} 歲`;
+    } else if (year < 90) {
+        return `享壽 ${year} 歲`;
+    } else if (year < 100) {
+        return `享耆壽 ${year} 歲`;
+    } else {
+        return `享嵩壽 ${year} 歲`;
+    }
+}
+
 function onMouseOver(event) {
     let id = event.target.dataset.id;
     if (id === undefined) {
@@ -159,7 +173,11 @@ function updateNode(node, data, currentData, options = {}) {
 
         if (data['birth_day'] !== undefined && data['birth_day'] !== '' &&
             data['death_day'] !== undefined && data['death_day'] !== '') {
-            lifeNode.innerHTML += `<div>享年 ${data['death_day'] - data['birth_day'] + 1} (${data['birth_day']} - ${data['death_day']})</div>`;
+            console.log(data['birth_day']);
+            console.log(data['death_day']);
+            let lifeYear = parseInt(data['death_day']) - parseInt(data['birth_day']) + 1;
+            let lifeNote = getLifeNote(lifeYear);
+            lifeNode.innerHTML += `<div>${lifeNote} (${data['birth_day']} - ${data['death_day']})</div>`;
         }
 
         let titleNode = node.querySelectorAll('.title')[0];

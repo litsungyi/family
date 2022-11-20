@@ -12,10 +12,8 @@ BODY {
 
 #familyNode {
     position: absolute;
-    padding: 0px;
-    margin: 0px;
+    left: 0;
     top: 0;
-    bottom: 0;
     width: 100%;
     height: 100%;
 }
@@ -77,44 +75,3 @@ A {
     float: left;
     clear: right;
 }
-
-/*
-.self {
-    position: absolute;
-    margin: auto;
-    left: 0%;
-    right: 0%;
-    top: 0%;
-    bottom: 0%;
-}
-
-.other {
-    position: relative;
-}
-
-.parentsNodes {
-    position: absolute;
-    margin: auto;
-    left: 0%;
-    right: 0%;
-    top: -200px;
-}
-
-.companionNodes {
-    position: absolute;
-    right: -200px;
-}
-
-.siblingNodes {
-    position: absolute;
-    left: 200px;
-}
-
-.childrenNodes {
-    position: absolute;
-    margin: auto;
-    left: 0%;
-    right: 0%;
-    bottom: -200px;
-}
-*/

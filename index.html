@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="robots" content="noindex">
+<meta charset=utf-8 />
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
 <title>李氏雯公族譜</title>
 
 <!-- Place your kit's code here -->
@@ -12,27 +15,27 @@
 
 <div id="familyNode"></div>
 
-<template id="selfNodeTemplate">
-    <div class="parentsNodes"></div>
-    <div class="selfNode">
-        <div class="node">
-            <div class="title"></div>
-            <div class="name"></div>
-            <div class="life"></div>
-            <div class="description"></div>
-        </div>
-        <div class="companionNodes"></div>
-    </div>
-    <div class="siblingNodes"></div>
-    <div class="childrenNodes"></div>
+<template id="rootTemplate">
+    <div id="parentsNodes"></div>
+    <div id="companionNodes"></div>
+    <div id="siblingNodes"></div>
+    <div id="childrenNodes"></div>
 </template>
 
 <template id="nodeTemplate">
-    <div class="node">
-        <div class="title"></div>
-        <div class="name"></div>
-        <div class="life"></div>
-        <div class="description"></div>
+    <div class="layout">
+        <div class="node">
+            <div class="generationTitle"></div>
+            <div class="name"></div>
+            <div class="nameAlias"></div>
+            <div class="lifeDescription"></div>
+            <div class="birthText"></div>
+            <div class="deathText"></div>
+            <div class="tomb"></div>
+            <div class="relation"></div>
+            <input class="ckeckbox" type="checkbox" />
+            <label class="controller" for=""></label>
+        </div>
     </div>
 </template>
 

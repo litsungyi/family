@@ -335,20 +335,40 @@ function onMouseOver(event) {
     console.log(id);
 }
 
+function onCheckboxChanged(event) {
+    let id = event.target.dataset.id;
+    if (this.checked) {
+        changeId(id);
+    } else {
+    }
+}
+
 function updateNode(node, data, currentData, options = {}) {
-    let rootNode = node.querySelectorAll('.node')[0];
-    rootNode.id = data['id'];
-    rootNode.setAttribute("data-id", data['id']);
+    let rootNode = node.querySelectorAll('.layout')[0];
+    if (options['style'] !== undefined) {
+        rootNode.classList.add(options['style']);
+    }
+
+    let dataNode = node.querySelectorAll('.node')[0];
+    let checkNode = node.querySelectorAll('.ckeckbox')[0];
+    let labelNode = node.querySelectorAll('.controller')[0];
+    checkNode.id = `checkbox_${data['id']}`;
+    checkNode.setAttribute("data-id", data['id']);
+    labelNode.setAttribute("for", `checkbox_${data['id']}`);
     rootNode.addEventListener('mouseover', onMouseOver);
+    checkNode.addEventListener('change', onCheckboxChanged);
 
     if (data['is_male']) {
-        rootNode.classList.add('male');
+        dataNode.classList.add('male');
     } else {
-        rootNode.classList.add('female');
+        dataNode.classList.add('female');
     }
 
     if (options['showLife'] !== undefined && options['showLife']) {
-        let lifeNode = node.querySelectorAll('.life')[0];
+        if (!data['is_alive']) {
+            let titleNode = node.querySelectorAll('.generationTitle')[0];
+            titleNode.innerHTML += `${data['generation_title']}`;
+        }
 
         let name_alias = [];
         if (data['courtesy_name'] !== undefined && data['courtesy_name'] !== '') {
@@ -360,97 +380,102 @@ function updateNode(node, data, currentData, options = {}) {
         }
 
         if (name_alias.length !== 0) {
-            lifeNode.innerHTML += `<div>${name_alias.join('，')}</div>`;
+            let nameAliasNode = node.querySelectorAll('.nameAlias')[0];
+            nameAliasNode.innerHTML += `${name_alias.join('，')}`;
         }
 
         if (!data['is_alive']) {
-            lifeNode.innerHTML += `<div>${data['year_of_birth_and_death']}</div>`;
-        }
-
-        let titleNode = node.querySelectorAll('.title')[0];
-        if (!data['is_alive']) {
-            titleNode.innerHTML += `<div>${data['generation_title']}</div>`;
+            let lifeNode = node.querySelectorAll('.lifeDescription')[0];
+            lifeNode.innerHTML += `${data['year_of_birth_and_death']}`;
         }
 
         if (data['birth_text'] !== '') {
-            lifeNode.innerHTML += `<div>${data['birth_text']}</div>`;
+            let birthTextNode = node.querySelectorAll('.birthText')[0];
+            birthTextNode.innerHTML += `${data['birth_text']}`;
         }
 
         if (data['death_text'] !== '') {
-            lifeNode.innerHTML += `<div>${data['death_text']}</div>`;
+            let deathTextNode = node.querySelectorAll('.deathText')[0];
+            deathTextNode.innerHTML += `${data['death_text']}`;
         }
 
         if (data['tomb'] !== '') {
-            lifeNode.innerHTML += `<div>${data['tomb']}</div>`;
+            let tombNode = node.querySelectorAll('.tomb')[0];
+            tombNode.innerHTML += `${data['tomb']}`;
         }
     }
 
     let isSelf = false;
     if (options['relation'] === undefined) {
-        rootNode.classList.add('other');
+        dataNode.classList.add('other');
     } else {
-        let descriptionNode = node.querySelectorAll('.description')[0];
+        let relationNode = node.querySelectorAll('.relation')[0];
         switch (options['relation']) {
             case 'self':
                 isSelf = true;
-                rootNode.classList.add('self');
+                dataNode.classList.add('self');
                 break;
 
             case 'adoptive father':
-                rootNode.classList.add('other');
-                descriptionNode.innerHTML += `<div>父親 (出)</div>`;
+                dataNode.classList.add('parents');
+                relationNode.innerHTML += `<div>父親 (出)</div>`;
+                break;
+
+            case 'adoptive mother':
+                dataNode.classList.add('parents');
+                relationNode.innerHTML += `<div>母親 (出)</div>`;
                 break;
 
             case 'father':
-                rootNode.classList.add('other');
+                dataNode.classList.add('parents');
                 if (currentData['adoption_type'] === '入' ) {
-                    descriptionNode.innerHTML += `<div>父親 (入)</div>`;
+                    relationNode.innerHTML += `<div>父親 (入)</div>`;
                 } else {
-                    descriptionNode.innerHTML += `<div>父親</div>`;
+                    relationNode.innerHTML += `<div>父親</div>`;
                 }
                 break;
 
             case 'mother':
-                rootNode.classList.add('other');
-                descriptionNode.innerHTML += `<div>母親</div>`;
+                dataNode.classList.add('parents');
+                relationNode.innerHTML += `<div>母親</div>`;
                 break;
 
             case 'companion':
-                rootNode.classList.add('self');
+                dataNode.classList.add('self');
                 if (data['is_male']) {
-                    descriptionNode.innerHTML += `<div>丈夫</div>`;
+                    relationNode.innerHTML += `<div>丈夫</div>`;
                 } else {
-                    descriptionNode.innerHTML += `<div>妻子</div>`;
+                    relationNode.innerHTML += `<div>妻子</div>`;
                 }
                 break;
 
             case 'sibling':
-                rootNode.classList.add('other');
+                dataNode.classList.add('sibling');
                 if (data['is_male']) {
                     if (data['order'] === '' || currentData['order'] === '') {
-                        descriptionNode.innerHTML += `<div>兄弟 (${data['order']})</div>`;
+                        relationNode.innerHTML += `<div>兄弟 (${data['order']})</div>`;
                     } else if (data['order'] < currentData['order']) {
-                        descriptionNode.innerHTML += `<div>哥哥 (${data['order']})</div>`;
+                        relationNode.innerHTML += `<div>哥哥 (${data['order']})</div>`;
                     } else if (data['order'] > currentData['order']) {
-                        descriptionNode.innerHTML += `<div>弟弟 (${data['order']})</div>`;
+                        relationNode.innerHTML += `<div>弟弟 (${data['order']})</div>`;
                     } else {
-                        descriptionNode.innerHTML += `<div>兄弟 (${data['order']})</div>`;
+                        relationNode.innerHTML += `<div>兄弟 (${data['order']})</div>`;
                     }
                 } else {
                     if (data['order'] === '' || currentData['order'] === '') {
-                        descriptionNode.innerHTML += `<div>姐妹 (${data['order']})</div>`;
+                        relationNode.innerHTML += `<div>姐妹 (${data['order']})</div>`;
                     } else if (data['order'] < currentData['order']) {
-                        descriptionNode.innerHTML += `<div>姐姐 (${data['order']})</div>`;
+                        relationNode.innerHTML += `<div>姐姐 (${data['order']})</div>`;
                     } else if (data['order'] > currentData['order']) {
-                        descriptionNode.innerHTML += `<div>妹妹 (${data['order']})</div>`;
+                        relationNode.innerHTML += `<div>妹妹 (${data['order']})</div>`;
                     } else {
-                        descriptionNode.innerHTML += `<div>姐妹 (${data['order']})</div>`;
+                        relationNode.innerHTML += `<div>姐妹 (${data['order']})</div>`;
                     }
                 }
                 break;
 
             case 'child':
-                rootNode.classList.add('other');
+                dataNode.classList.add('child');
                 let orderChild = data['order'];
                 if (data['adoption_type'] === '入' && currentData['id'] === data['adoption_id']) {
                     orderChild = data['order2']
@@ -459,18 +484,18 @@ function updateNode(node, data, currentData, options = {}) {
                 }
 
                 if (data['is_male']) {
-                    descriptionNode.innerHTML += `<div>兒子 (${orderChild})</div>`;
+                    relationNode.innerHTML += `<div>兒子 (${orderChild})</div>`;
                 } else {
-                    descriptionNode.innerHTML += `<div>女兒 (${orderChild})</div>`;
+                    relationNode.innerHTML += `<div>女兒 (${orderChild})</div>`;
                 }
                 break;
 
             case 'adoptive child':
-                rootNode.classList.add('other');
+                dataNode.classList.add('other');
                 if (data['is_male']) {
-                    descriptionNode.innerHTML += `<div>兒子 (${data['order']})</div>`;
+                    relationNode.innerHTML += `<div>兒子 (${data['order']})</div>`;
                 } else {
-                    descriptionNode.innerHTML += `<div>女兒 (${data['order']})</div>`;
+                    relationNode.innerHTML += `<div>女兒 (${data['order']})</div>`;
                 }
                 break;
         }
@@ -489,13 +514,13 @@ function updateNode(node, data, currentData, options = {}) {
             nameNode.innerHTML = `${genderIcon} ${data['first_name']}`;
         } else {
             if (data['adoption_type'] === '入' && currentData['id'] === data['adoption_id']) {
-                nameNode.innerHTML = `${genderIcon} <a href="javascript: changeId('${data['id']}');">${data['first_name']} (出) <i class="fas fa-solid fa-link fa-sm"></i></a>`;
+                nameNode.innerHTML = `${genderIcon} <a href="#">${data['first_name']} (出) <i class="fas fa-solid fa-link fa-sm"></i></a>`;
             } else if (data['adoption_type'] === '承' && currentData['adoption_id'] === data['id']) {
-                nameNode.innerHTML = `${genderIcon} <a href="javascript: changeId('${data['id']}');">${data['first_name']} (出) <i class="fas fa-solid fa-link fa-sm"></i></a>`;
+                nameNode.innerHTML = `${genderIcon} <a href="#">${data['first_name']} (出) <i class="fas fa-solid fa-link fa-sm"></i></a>`;
             } else if (data['adoption_type'] !== '') {
-                nameNode.innerHTML = `${genderIcon} <a href="javascript: changeId('${data['id']}');">${data['first_name']} (${data['adoption_type']}) <i class="fas fa-solid fa-link fa-sm"></i></a>`;
+                nameNode.innerHTML = `${genderIcon} <a href="#">${data['first_name']} (${data['adoption_type']}) <i class="fas fa-solid fa-link fa-sm"></i></a>`;
             } else {
-                nameNode.innerHTML = `${genderIcon} <a href="javascript: changeId('${data['id']}');">${data['first_name']} <i class="fas fa-solid fa-link fa-sm"></i></a>`;
+                nameNode.innerHTML = `${genderIcon} <a href="#">${data['first_name']} <i class="fas fa-solid fa-link fa-sm"></i></a>`;
             }
         }
     } else {
@@ -536,73 +561,60 @@ function drawNode(id) {
         currentData = datas[GREAT_HASH];
     }
 
-    let selfNodeTemplate = document.getElementById("selfNodeTemplate");
+    let rootTemplate = document.getElementById("rootTemplate");
     let nodeTemplate = document.getElementById("nodeTemplate");
 
     let root = document.getElementById('familyNode');
     root.innerHTML = "";
+    var rootNode = rootTemplate.content.cloneNode(true);
+    root.appendChild(rootNode);
 
-    var currentNode = selfNodeTemplate.content.cloneNode(true);
-    updateNode(currentNode, currentData, currentData, {relation: 'self', showLife: true});
-    root.appendChild(currentNode);
-
-    let parentsNodes = document.getElementsByClassName('parentsNodes')[0];
-
-    let adoptiveFatherData = getAdoptiveFatherData(currentData);
-    if (adoptiveFatherData != null) {
-        var fatherNode = nodeTemplate.content.cloneNode(true);
-        updateNode(fatherNode, adoptiveFatherData, currentData, {relation: 'adoptive father'});
-        parentsNodes.appendChild(fatherNode);
-    }
-
-    let fatherData = getFatherData(currentData);
-    if (fatherData != null) {
-        var fatherNode = nodeTemplate.content.cloneNode(true);
-        updateNode(fatherNode, fatherData, currentData, {relation: 'father'});
-        parentsNodes.appendChild(fatherNode);
-    }
-
-    let motherData = getMotherData(currentData);
-    if (motherData != null) {
-        var motherNode = nodeTemplate.content.cloneNode(true);
-        updateNode(motherNode, motherData, currentData, {relation: 'mother'});
-        parentsNodes.appendChild(motherNode);
-    }
-
-    let companionNodes = document.getElementsByClassName('companionNodes')[0];
-    let companionDatas = getCompanionDatas(currentData);
-    for (let index in companionDatas)
     {
-        let companionData = companionDatas[index];
-        var companionNode = nodeTemplate.content.cloneNode(true);
-        updateNode(companionNode, companionData, currentData, {showLife: true, relation: 'companion'});
-        companionNodes.appendChild(companionNode);
-    }
+        let dataResult = getRelatedClanDatas(currentData);
 
-    let siblingNodes = document.getElementsByClassName('siblingNodes')[0];
-    let siblingDatas = getSiblingDatas(currentData);
-    for (let index in siblingDatas)
-    {
-        let siblingData = siblingDatas[index];
-        var siblingNode = nodeTemplate.content.cloneNode(true);
-        updateNode(siblingNode, siblingData, currentData, {relation: 'sibling'});
-        siblingNodes.appendChild(siblingNode);
-    }
+        let parentsNodes = document.getElementById('parentsNodes');
+        let parentsData = dataResult.filter( item => isParent(item.relation) );
+        parentsData.map( (item, index) => createNode(nodeTemplate, parentsNodes, item.data, item.relation, currentData, false, index + 1, parentsData.length));
 
-    let childrenNodes = document.getElementsByClassName('childrenNodes')[0];
-    let childDatas = getChildDatas(currentData);
-    let adoptiveChildrenDatas = getAdoptiveChildDatas(currentData);
-    childDatas = childDatas.concat(adoptiveChildrenDatas).sort(sortChildOrder);
-    for (let index in childDatas)
-    {
-        let childData = childDatas[index];
-        var childNode = nodeTemplate.content.cloneNode(true);
-        updateNode(childNode, childData, currentData, {relation: 'child'});
-        childrenNodes.appendChild(childNode);
-    }
+        let companionNodes = document.getElementById('companionNodes');
+        let companionData = dataResult.filter( item => isCompanion(item.relation) )
+        createNode(nodeTemplate, companionNodes, currentData, 'self', currentData, true, 1, companionData.length + 1)
+        companionData.map( (item, index) => createNode(nodeTemplate, companionNodes, item.data, item.relation, currentData, true, index + 2, companionData.length + 1));
 
-    let dataResult = getRelatedClanDatas(currentData);
-    console.log(dataResult);
+        let siblingNodes = document.getElementById('siblingNodes');
+        let siblingData = dataResult.filter( item => isSibling(item.relation) );
+        siblingData.map( (item, index) => createNode(nodeTemplate, siblingNodes, item.data, item.relation, currentData, false, index + 1, siblingData.length));
+
+        let childrenNodes = document.getElementById('childrenNodes');
+        let childrenDatas = dataResult.filter( item => isChild(item.relation) );
+        childrenDatas.map( (item, index) => createNode(nodeTemplate, childrenNodes, item.data, item.relation, currentData, false, index + 1, childrenDatas.length));
+    }
+}
+
+function isParent(relation) {
+    return relation === 'father'
+        || relation === 'mother'
+        || relation === 'adoptive father'
+        || relation === 'adoptive mother';
+}
+
+function isCompanion(relation) {
+    return relation === 'companion';
+}
+
+function isSibling(relation) {
+    return relation === 'sibling'
+        || relation === 'adoptive sibling';
+}
+
+function isChild(relation) {
+    return relation === 'child';
+}
+
+function createNode(template, container, data, relation, currentData, showLife = false, index = 1, size = 1) {
+    let node = template.content.cloneNode(true);
+    updateNode(node, data, currentData, {relation: relation, showLife: showLife, style: `align_${index}_${size}`});
+    container.appendChild(node);
 }
 
 function numberToString(num) {

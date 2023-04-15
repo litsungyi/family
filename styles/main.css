@@ -1,23 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC&display=swap');
 
-DIV {
+* {
     font-family: 'Noto Sans TC', sans-serif;
-    /*outline: #f00 solid thin;*/
-}
-
-BODY {
     padding: 0px;
     margin: 0px;
+    /* outline: #f00 solid thin; */
 }
+
+/* LABEL {
+    outline: #00f solid thin;
+} */
 
 #familyNode {
     position: absolute;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     top: 0;
     bottom: 0;
+    left: 0;
+    right: 0;
     width: 100%;
     height: 100%;
+}
+
+.node > LABEL {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .node {
@@ -34,6 +46,10 @@ BODY {
 
 A {
     text-decoration: none;
+}
+
+INPUT {
+    display: none;
 }
 
 .male {
@@ -57,64 +73,427 @@ A {
 }
 
 .self {
+    position: absolute;
     width: 300px;
     height: 200px;
-    clear: left;
-    float: left;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 
-.other {
+.parents {
+    position: absolute;
     width: 200px;
     height: 100px;
-    float: left;
-}
-
-.parentsNodes, .siblingNodes, .childrenNodes {
-    clear: both;
-}
-
-.companionNodes {
-    float: left;
-    clear: right;
-}
-
-/*
-.self {
-    position: absolute;
+    left: 0;
+    right: 0;
     margin: auto;
-    left: 0%;
-    right: 0%;
-    top: 0%;
-    bottom: 0%;
 }
 
-.other {
-    position: relative;
-}
-
-.parentsNodes {
+.sibling {
     position: absolute;
+    width: 200px;
+    height: 100px;
+    left: 0;
+    right: 0;
     margin: auto;
-    left: 0%;
-    right: 0%;
-    top: -200px;
 }
 
-.companionNodes {
+.child {
     position: absolute;
-    right: -200px;
-}
-
-.siblingNodes {
-    position: absolute;
-    left: 200px;
-}
-
-.childrenNodes {
-    position: absolute;
+    width: 200px;
+    height: 100px;
+    left: 0;
+    right: 0;
     margin: auto;
-    left: 0%;
-    right: 0%;
-    bottom: -200px;
 }
-*/
+
+#parentsNodes {
+    display: block;
+    height: 200px;
+    margin-bottom: 50px;
+}
+
+#companionNodes {
+    display: block;
+    height: 300px;
+    margin: 100px;
+}
+
+#siblingNodes {
+    display: block;
+    height: 200px;
+    margin-top: 50px;
+}
+
+#childrenNodes {
+    display: block;
+    height: 200px;
+    margin-top: 50px;
+}
+
+.align_1_1 {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.align_1_2 {
+    position: absolute;
+    width: 50%;
+    left: 0;
+}
+
+.align_2_2 {
+    position: absolute;
+    width: 50%;
+    right: 0;
+}
+
+.align_1_3 {
+    position: absolute;
+    width: 33%;
+    left: 0;
+}
+
+.align_2_3 {
+    position: absolute;
+    width: 33%;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.align_3_3 {
+    position: absolute;
+    width: 33%;
+    right: 0;
+}
+
+.align_1_4 {
+    position: absolute;
+    width: 25%;
+    left: 0;
+}
+
+.align_2_4 {
+    position: absolute;
+    width: 25%;
+    left: 25%;
+}
+
+.align_3_4 {
+    position: absolute;
+    width: 25%;
+    right: 25%;
+}
+
+.align_4_4 {
+    position: absolute;
+    width: 25%;
+    right: 0;
+}
+
+.align_1_5 {
+    position: absolute;
+    width: 20%;
+    left: 0;
+}
+
+.align_2_5 {
+    position: absolute;
+    width: 20%;
+    left: 20%;
+}
+
+.align_3_5 {
+    position: absolute;
+    width: 20%;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.align_4_5 {
+    position: absolute;
+    width: 20%;
+    right: 20%;
+}
+
+.align_5_5 {
+    position: absolute;
+    width: 20%;
+    right: 0;
+}
+
+.align_1_6 {
+    position: absolute;
+    width: 33%;
+    left: 0;
+}
+
+.align_2_6 {
+    position: absolute;
+    width: 33%;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.align_3_6 {
+    position: absolute;
+    width: 33%;
+    right: 0;
+}
+
+.align_4_6 {
+    position: absolute;
+    width: 33%;
+    bottom: -150px;
+    left: 0;
+}
+
+.align_5_6 {
+    position: absolute;
+    width: 33%;
+    bottom: -150px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.align_6_6 {
+    position: absolute;
+    width: 33%;
+    bottom: -150px;
+    right: 0;
+}
+
+.align_1_7 {
+    position: absolute;
+    width: 25%;
+    left: 0;
+}
+
+.align_2_7 {
+    position: absolute;
+    width: 25%;
+    left: 25%;
+}
+
+.align_3_7 {
+    position: absolute;
+    width: 25%;
+    right: 25%;
+}
+
+.align_4_7 {
+    position: absolute;
+    width: 25%;
+    right: 0;
+}
+
+.align_5_7 {
+    position: absolute;
+    width: 33%;
+    bottom: -150px;
+    left: 0;
+}
+
+.align_6_7 {
+    position: absolute;
+    width: 33%;
+    bottom: -150px;
+    right: 0;
+    margin: auto;
+}
+
+.align_7_7 {
+    position: absolute;
+    width: 33%;
+    bottom: -150px;
+    right: 0;
+}
+
+.align_1_8 {
+    position: absolute;
+    width: 25%;
+    left: 0;
+}
+
+.align_2_8 {
+    position: absolute;
+    width: 25%;
+    left: 25%;
+}
+
+.align_3_8 {
+    position: absolute;
+    width: 25%;
+    right: 25%;
+}
+
+.align_4_8 {
+    position: absolute;
+    width: 25%;
+    right: 0;
+}
+
+.align_5_8 {
+    position: absolute;
+    width: 25%;
+    bottom: -150px;
+    left: 0;
+}
+
+.align_6_8 {
+    position: absolute;
+    width: 25%;
+    bottom: -150px;
+    left: 25%;
+}
+
+.align_7_8 {
+    position: absolute;
+    width: 25%;
+    bottom: -150px;
+    right: 25%;
+}
+
+.align_8_8 {
+    position: absolute;
+    width: 25%;
+    bottom: -150px;
+    right: 0;
+}
+
+.align_1_9 {
+    position: absolute;
+    width: 20%;
+    left: 0;
+}
+
+.align_2_9 {
+    position: absolute;
+    width: 20%;
+    left: 20%;
+}
+
+.align_3_9 {
+    position: absolute;
+    width: 20%;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.align_4_9 {
+    position: absolute;
+    width: 20%;
+    right: 20%;
+}
+
+.align_5_9 {
+    position: absolute;
+    width: 20%;
+    right: 0;
+}
+
+.align_6_9 {
+    position: absolute;
+    width: 25%;
+    bottom: -150px;
+    left: 0;
+}
+
+.align_7_9 {
+    position: absolute;
+    width: 25%;
+    bottom: -150px;
+    left: 25%;
+}
+
+.align_8_9 {
+    position: absolute;
+    width: 25%;
+    bottom: -150px;
+    right: 25%;
+}
+
+.align_9_9 {
+    position: absolute;
+    width: 25%;
+    bottom: -150px;
+    right: 0;
+}
+
+.align_1_10 {
+    position: absolute;
+    width: 20%;
+    left: 0;
+}
+
+.align_2_10 {
+    position: absolute;
+    width: 20%;
+    left: 20%;
+}
+
+.align_3_10 {
+    position: absolute;
+    width: 20%;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.align_4_10 {
+    position: absolute;
+    width: 20%;
+    right: 20%;
+}
+
+.align_5_10 {
+    position: absolute;
+    width: 20%;
+    right: 0;
+}
+
+.align_6_10 {
+    position: absolute;
+    width: 20%;
+    bottom: -150px;
+    left: 0;
+}
+
+.align_7_10 {
+    position: absolute;
+    width: 20%;
+    bottom: -150px;
+    left: 20%;
+}
+
+.align_8_10 {
+    position: absolute;
+    width: 20%;
+    bottom: -150px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.align_9_10 {
+    position: absolute;
+    width: 20%;
+    bottom: -150px;
+    right: 20%;
+}
+
+.align_10_10 {
+    position: absolute;
+    width: 20%;
+    bottom: -150px;
+    right: 0;
+}

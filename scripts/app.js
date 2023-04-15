@@ -3,7 +3,7 @@ let datas = {};
 let dataList = [];
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    let url = 'https://script.google.com/macros/s/AKfycbz9V-Su7h6JcjTAlXyVHHCGn4M-tu48ZhtXy78YlPq3-b3xIFw1m2tYcHbpMfBn8GSMyw/exec';
+    let url = 'https://script.google.com/macros/s/AKfycbx3Q6IWt8KjVvziVAA_wvaVcPtARR_bYV50mv5WpDTtv_0HZekBf-Gp8wk05-uR8GcKPQ/exec';
     fetch(url, { method: 'POST'}).then(response => {
         if (!response.ok) {
             console.log(response.status);
